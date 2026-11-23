@@ -23,6 +23,7 @@ jobs:
         run: |
           rm -rf "$THEOS"
           cp -R "$HOME/theos" "$THEOS"
+          "$THEOS/bin/update-theos"
           make all FINALPACKAGE=1 ARCHS=arm64e
           find . -name 'EditMenuRadiusTweak.dylib' -exec cp {} layout/Library/MobileSubstrate/DynamicLibraries/EditMenuRadius.dylib \;
           rm -rf layout/Library/PreferenceBundles/EditMenuRadiusPrefs.bundle
