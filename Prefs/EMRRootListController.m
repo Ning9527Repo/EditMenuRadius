@@ -6,9 +6,10 @@
 @implementation EMRRootListController
 
 - (NSArray *)specifiers {
-    NSArray *loaded = [super specifiers];
+    NSMutableArray *loaded = (NSMutableArray *)[super specifiers];
     if (!loaded) {
-        loaded = [self loadSpecifiersFromPlistName:@"Root" target:self];
+        NSArray *source = [self loadSpecifiersFromPlistName:@"Root" target:self];
+        loaded = source ? [NSMutableArray arrayWithArray:source] : [NSMutableArray array];
         [self setSpecifiers:loaded];
     }
     return loaded;
