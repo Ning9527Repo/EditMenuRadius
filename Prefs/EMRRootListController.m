@@ -7,11 +7,10 @@
 @implementation EMRRootListController
 - (NSArray *)specifiers {
     if (_specifiers) return _specifiers;
-    _specifiers = @[
+    _specifiers = [NSMutableArray arrayWithObject:
         [PSSpecifier preferenceSpecifierNamed:@"编辑菜单圆角"
                     target:self set:@selector(setPreferenceValue:specifier:)
-                    get:@selector(readPreferenceValue:) detail:Nil cell:PSSliderCell edit:Nil],
-    ];
+                    get:@selector(readPreferenceValue:) detail:Nil cell:PSSliderCell edit:Nil]];
     PSSpecifier *slider = _specifiers[0];
     [slider setProperty:@0.0 forKey:@"default"];
     [slider setProperty:@0.0 forKey:@"min"];
