@@ -4,6 +4,7 @@
 <key>entry</key><dict>
 <key>bundle</key><string>EditMenuRadiusPrefs</string>
 <key>cell</key><string>PSLinkCell</string>
-<key>icon</key><string>icon.png</string>
+<key>detail</key><string>EMRRootListController</string>
+<key>isController</key><true/>
 <key>label</key><string>编辑菜单圆角</string>
 </dict></dict></plist>
