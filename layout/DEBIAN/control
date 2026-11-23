@@ -1,6 +1,6 @@
 Package: com.ning.editmenuradius
 Name: 编辑菜单圆角
-Version: 0.1.2
+Version: 0.2.0
 Architecture: iphoneos-arm64e
 Description: 为所有 App 的系统编辑菜单提供可调圆角
 Maintainer: Ning
