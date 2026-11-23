@@ -23,7 +23,11 @@ jobs:
         run: |
           rm -rf "$THEOS"
           cp -R "$HOME/theos" "$THEOS"
-          make package FINALPACKAGE=1 ARCHS=arm64e THEOS_PACKAGE_SCHEME=roothide PACKAGE_VERSION=${{ inputs.version }}
+          make package FINALPACKAGE=1 ARCHS=arm64e PACKAGE_VERSION=${{ inputs.version }}
+          mkdir -p verified
+          cp packages/*.deb verified/EditMenuRadius_0.1.0_iphoneos-arm64e.deb
+          dpkg-deb -I verified/EditMenuRadius_0.1.0_iphoneos-arm64e.deb
+          dpkg-deb -c verified/EditMenuRadius_0.1.0_iphoneos-arm64e.deb | grep -E 'Library/MobileSubstrate|Library/Preference'
       - uses: actions/upload-artifact@v4
         with:
           name: edit-menu-radius-${{ inputs.version }}-arm64e
