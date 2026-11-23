@@ -21,5 +21,5 @@ after-all::
 	$(ECHO_NOTHING)mkdir -p $(THEOS_STAGING_DIR)/Library/MobileSubstrate/DynamicLibraries $(THEOS_STAGING_DIR)/Library/PreferenceBundles/EditMenuRadiusPrefs.bundle/Resources $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences$(ECHO_END)
 	$(ECHO_NOTHING)cp layout/Library/MobileSubstrate/DynamicLibraries/EditMenuRadius.plist $(THEOS_STAGING_DIR)/Library/MobileSubstrate/DynamicLibraries/$(ECHO_END)
 	$(ECHO_NOTHING)cp layout/Library/PreferenceLoader/Preferences/EditMenuRadius.plist $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences/$(ECHO_END)
-	$(ECHO_NOTHING)cp layout/Library/PreferenceBundles/EditMenuRadius.bundle/Info.plist $(THEOS_STAGING_DIR)/Library/PreferenceBundles/EditMenuRadiusPrefs.bundle/$(ECHO_END)
-	$(ECHO_NOTHING)cp layout/Library/PreferenceBundles/EditMenuRadius.bundle/Resources/Root.plist $(THEOS_STAGING_DIR)/Library/PreferenceBundles/EditMenuRadiusPrefs.bundle/Resources/$(ECHO_END)
+	$(ECHO_NOTHING)cp Prefs/Info.plist $(THEOS_STAGING_DIR)/Library/PreferenceBundles/EditMenuRadiusPrefs.bundle/$(ECHO_END)
+	$(ECHO_NOTHING)cp Prefs/Root.plist $(THEOS_STAGING_DIR)/Library/PreferenceBundles/EditMenuRadiusPrefs.bundle/Resources/$(ECHO_END)
