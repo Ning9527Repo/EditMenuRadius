@@ -5,10 +5,11 @@
 
 @implementation EMRRootListController
 
-// Root.plist supplies the slider. Do not dynamically create PSSpecifiers:
-// iOS Settings crashes when the private cell class is constructed here.
 - (NSArray *)specifiers {
-    return [super specifiers];
+    if (!_specifiers) {
+        _specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
+    }
+    return _specifiers;
 }
 
 @end

@@ -22,4 +22,5 @@ after-all::
 	$(ECHO_NOTHING)cp layout/Library/MobileSubstrate/DynamicLibraries/EditMenuRadius.plist $(THEOS_STAGING_DIR)/Library/MobileSubstrate/DynamicLibraries/$(ECHO_END)
 	$(ECHO_NOTHING)cp layout/Library/PreferenceLoader/Preferences/EditMenuRadius.plist $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences/$(ECHO_END)
 	$(ECHO_NOTHING)cp Prefs/Info.plist $(THEOS_STAGING_DIR)/Library/PreferenceBundles/EditMenuRadiusPrefs.bundle/$(ECHO_END)
+	$(ECHO_NOTHING)cp Prefs/Root.plist $(THEOS_STAGING_DIR)/Library/PreferenceBundles/EditMenuRadiusPrefs.bundle/$(ECHO_END)
 	$(ECHO_NOTHING)cp Prefs/Root.plist $(THEOS_STAGING_DIR)/Library/PreferenceBundles/EditMenuRadiusPrefs.bundle/Resources/$(ECHO_END)
