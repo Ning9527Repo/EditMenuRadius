@@ -69,7 +69,7 @@ __attribute__((constructor)) static void EMRInit(void) {
         if (gInstalling) return;
         gInstalling = YES;
         int count = objc_getClassList(NULL, 0);
-        Class *classes = calloc((size_t)count, sizeof(Class));
+        __unsafe_unretained Class *classes = (__unsafe_unretained Class *)calloc((size_t)count, sizeof(Class));
         count = objc_getClassList(classes, count);
         for (int i = 0; i < count; i++) EMRInstallClass(classes[i]);
         free(classes);
