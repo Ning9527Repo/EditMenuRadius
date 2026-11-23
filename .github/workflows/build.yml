@@ -23,7 +23,12 @@ jobs:
         run: |
           rm -rf "$THEOS"
           cp -R "$HOME/theos" "$THEOS"
-          make package FINALPACKAGE=1 ARCHS=arm64e PACKAGE_VERSION=${{ inputs.version }}
+          make all FINALPACKAGE=1 ARCHS=arm64e
+          find . -name 'EditMenuRadiusTweak.dylib' -exec cp {} layout/Library/MobileSubstrate/DynamicLibraries/EditMenuRadius.dylib \;
+          rm -rf layout/Library/PreferenceBundles/EditMenuRadiusPrefs.bundle
+          mkdir -p layout/Library/PreferenceBundles
+          find . -type d -name 'EditMenuRadiusPrefs.bundle' -exec cp -R {} layout/Library/PreferenceBundles/ \;
+          python3 tools/package.py
           mkdir -p verified
           cp packages/*.deb verified/EditMenuRadius_0.1.0_iphoneos-arm64e.deb
           dpkg-deb -I verified/EditMenuRadius_0.1.0_iphoneos-arm64e.deb
