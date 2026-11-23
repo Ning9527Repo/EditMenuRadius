@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0"><dict>
-<key>items</key><array>
-<dict><key>cell</key><string>PSSliderCell</string><key>label</key><string>编辑菜单圆角</string><key>defaults</key><string>com.ning.editmenuradius</string><key>key</key><string>radius</string><key>default</key><real>0</real><key>min</key><real>0</real><key>max</key><real>80</real><key>showValue</key><true/></dict>
-</array></dict></plist>

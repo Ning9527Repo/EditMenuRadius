@@ -19,8 +19,8 @@ subprocess.run(['ldid', '-S', str(dst)], check=True)
 prefs_bin = bdst / 'EditMenuRadiusPrefs'
 if prefs_bin.exists():
     subprocess.run(['ldid', '-S', str(prefs_bin)], check=True)
-# Theos stage can leave stale nested output; remove it before packaging.
-for p in list(bdst.rglob('EditMenuRadiusPrefs.bundle')):
+# Remove debug symbols and other non-runtime build products.
+for p in list(bdst.rglob('*.dSYM')):
     if p.is_dir(): shutil.rmtree(p)
 package = out / 'com.ning.editmenuradius_0.1.0_iphoneos-arm64e.deb'
 subprocess.run(['dpkg-deb', '-b', str(stage), str(package)], check=True)
