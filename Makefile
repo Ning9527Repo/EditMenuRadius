@@ -12,7 +12,7 @@ BUNDLE_NAME = EditMenuRadiusPrefs
 EditMenuRadiusPrefs_FILES = Prefs/EMRRootListController.m
 EditMenuRadiusPrefs_INSTALL_PATH = /Library/PreferenceBundles
 EditMenuRadiusPrefs_FRAMEWORKS = UIKit
-EditMenuRadiusPrefs_PRIVATE_FRAMEWORKS = Preferences
+EditMenuRadiusPrefs_LDFLAGS = -Wl,-undefined,dynamic_lookup
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 include $(THEOS_MAKE_PATH)/bundle.mk
