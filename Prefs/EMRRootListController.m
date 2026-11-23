@@ -1,4 +1,10 @@
-#import <Preferences/PSListController.h>
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+@interface PSListController : UIViewController
+@property(nonatomic, retain) NSMutableArray *specifiers;
+- (id)loadSpecifiersFromPlistName:(NSString *)name target:(id)target;
+@end
 
 @interface EMRRootListController : PSListController
 @end
@@ -6,13 +12,10 @@
 @implementation EMRRootListController
 
 - (NSArray *)specifiers {
-    NSMutableArray *loaded = (NSMutableArray *)[super specifiers];
-    if (!loaded) {
-        NSArray *source = [self loadSpecifiersFromPlistName:@"Root" target:self];
-        loaded = source ? [NSMutableArray arrayWithArray:source] : [NSMutableArray array];
-        [self setSpecifiers:loaded];
+    if (!self.specifiers) {
+        self.specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
     }
-    return loaded;
+    return self.specifiers;
 }
 
 @end

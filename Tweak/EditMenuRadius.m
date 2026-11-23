@@ -8,70 +8,36 @@ static CGFloat EMRRadius(void) {
     return [n isKindOfClass:[NSNumber class]] ? MAX(0.0, n.doubleValue) : 0.0;
 }
 
-static BOOL EMRMenuClass(Class cls) {
-    NSString *n = NSStringFromClass(cls);
-    return [n containsString:@"EditMenu"] || [n containsString:@"MenuBar"] ||
-           [n containsString:@"ContextMenu"] || [n containsString:@"UIMenuController"];
+static BOOL EMRIsMenuName(NSString *name) {
+    return [name containsString:@"EditMenu"] || [name containsString:@"MenuBar"] ||
+           [name containsString:@"ContextMenu"] || [name containsString:@"UIMenuController"] ||
+           [name containsString:@"SelectionView"];
 }
 
-static void EMRApply(UIView *v, CGFloat r) {
-    if (!v || v.bounds.size.width <= 0 || v.bounds.size.height <= 0) return;
+static void EMRApply(UIView *v, CGFloat radius) {
+    if (v.bounds.size.width <= 0 || v.bounds.size.height <= 0) return;
+    CGFloat limit = MIN(v.bounds.size.width, v.bounds.size.height) * 0.5;
     v.layer.cornerCurve = kCACornerCurveContinuous;
-    v.layer.cornerRadius = MIN(r, MIN(v.bounds.size.width, v.bounds.size.height) / 2.0);
+    v.layer.cornerRadius = MIN(radius, limit);
     v.layer.masksToBounds = YES;
 }
 
-static void EMRApplyTree(UIView *v, CGFloat r) {
-    if (EMRMenuClass(v.class)) EMRApply(v, r);
-    for (UIView *child in v.subviews) EMRApplyTree(child, r);
+static void EMRScan(UIView *v, CGFloat radius, NSUInteger depth) {
+    if (!v || depth > 12) return;
+    if (EMRIsMenuName(NSStringFromClass(v.class))) EMRApply(v, radius);
+    for (UIView *child in v.subviews) EMRScan(child, radius, depth + 1);
 }
 
-typedef void (*EMRLayoutIMP)(id, SEL);
-typedef struct { Class cls; EMRLayoutIMP orig; } EMRHook;
-static EMRHook gHooks[128];
-static NSUInteger gHookCount;
-static BOOL gInstalling;
-
-static EMRLayoutIMP EMROriginalForClass(Class cls) {
-    for (NSUInteger i = 0; i < gHookCount; i++) if (gHooks[i].cls == cls) return gHooks[i].orig;
-    return NULL;
-}
-
-static void EMRLayout(id self, SEL cmd) {
-    Class cls = object_getClass(self);
-    EMRLayoutIMP orig = EMROriginalForClass(cls);
-    if (orig) orig(self, cmd);
-    CGFloat r = EMRRadius();
-    if (r > 0.0) EMRApplyTree((UIView *)self, r);
-}
-
-static void EMRInstallClass(Class cls) {
-    if (!cls || gHookCount >= 128 || !EMRMenuClass(cls)) return;
-    unsigned int methodCount = 0;
-    Method *methods = class_copyMethodList(cls, &methodCount);
-    Method m = NULL;
-    for (unsigned int i = 0; i < methodCount; i++) {
-        if (method_getName(methods[i]) == @selector(layoutSubviews)) {
-            m = methods[i];
-            break;
-        }
-    }
-    free(methods);
-    if (!m) return;
-    IMP old = method_getImplementation(m);
-    if (old == (IMP)EMRLayout) return;
-    gHooks[gHookCount++] = (EMRHook){ cls, (EMRLayoutIMP)old };
-    method_setImplementation(m, (IMP)EMRLayout);
+static void (*emr_origLayout)(UIView *, SEL);
+static void emr_layout(UIView *self, SEL cmd) {
+    if (emr_origLayout) emr_origLayout(self, cmd);
+    CGFloat radius = EMRRadius();
+    if (radius > 0.0) EMRScan(self, radius, 0);
 }
 
 __attribute__((constructor)) static void EMRInit(void) {
-    @autoreleasepool {
-        if (gInstalling) return;
-        gInstalling = YES;
-        int count = objc_getClassList(NULL, 0);
-        __unsafe_unretained Class *classes = (__unsafe_unretained Class *)calloc((size_t)count, sizeof(Class));
-        count = objc_getClassList(classes, count);
-        for (int i = 0; i < count; i++) EMRInstallClass(classes[i]);
-        free(classes);
+    Method method = class_getInstanceMethod(UIView.class, @selector(layoutSubviews));
+    if (method && method_getImplementation(method) != (IMP)emr_layout) {
+        MSHookMessageEx(UIView.class, @selector(layoutSubviews), (IMP)emr_layout, (IMP *)&emr_origLayout);
     }
 }
